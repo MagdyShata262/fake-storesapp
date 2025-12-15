@@ -8,7 +8,7 @@ export class ThemeService {
   // STATE (Signals)
   // ========================
   // signals لتخزين الثيم و RTL
-  theme = signal<'light' | 'dark' | 'brand'>('light');
+  theme = signal<'light' | 'dark'>('light');
   rtl = signal(false);
 
   constructor() {}
@@ -20,7 +20,7 @@ export class ThemeService {
   }
 
   // دالة تغيير الثيم
-  setTheme(value: 'light' | 'dark' | 'brand') {
+  setTheme(value: 'light' | 'dark') {
     this.theme.set(value);
     localStorage.setItem('theme', value);
     this.updateHtml();
@@ -35,7 +35,7 @@ export class ThemeService {
 
   // ✅ دالة init لتطبيق الإعدادات من localStorage عند تشغيل التطبيق
   init() {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'brand';
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
     const savedRtl = localStorage.getItem('rtl');
 
     if (savedTheme) this.theme.set(savedTheme);
