@@ -1,0 +1,115 @@
+// src/app/app.scss
+
+// === تنسيقات عامة للـ RTL ===
+html[dir="rtl"] {
+
+  // Bootstrap overrides
+  .navbar-nav {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .offcanvas-end {
+    left: 0;
+    right: auto;
+    transform: translateX(-100%);
+  }
+
+  // Margins & Paddings
+  .me-2 {
+    margin-left: 0.5rem !important;
+    margin-right: 0 !important;
+  }
+
+  .ms-2 {
+    margin-right: 0.5rem !important;
+    margin-left: 0 !important;
+  }
+
+  .ms-auto {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+  }
+
+  .pe-3 {
+    padding-left: 1rem !important;
+    padding-right: 0 !important;
+  }
+
+  .ps-3 {
+    padding-right: 1rem !important;
+    padding-left: 0 !important;
+  }
+
+  // نصوص قائمة التنقل
+  .nav-link {
+    text-align: right;
+  }
+}
+
+// === دعم الوضع الداكن (Dark Mode) ===
+// يُفعّل عند وجود data-bs-theme="dark" أو كلاس .dark-mode
+:root,
+[data-bs-theme="dark"],
+.dark-mode {
+  // خلفية الجسم والنص الأساسي
+  --bs-body-bg: #121212;
+  --bs-body-color: #e0e0e0;
+
+  // خلفية الكروت
+  --bs-card-bg: #1e1e1e;
+  --bs-card-border-color: #333333;
+
+  // الروابط والنص النشط
+  --bs-link-color: #64b5f6;
+  --bs-link-hover-color: #90caf9;
+
+  // الزر الفاتح في الوضع الداكن
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #333333;
+  --bs-btn-border-color: #444444;
+  --bs-btn-hover-bg: #444444;
+  --bs-btn-hover-border-color: #555555;
+
+  // Offcanvas
+  --bs-offcanvas-bg: #1e1e1e;
+  --bs-offcanvas-color: #e0e0e0;
+}
+
+// تطبيق المتغيرات تلقائيًا عند تفعيل الوضع الداكن
+body[data-bs-theme="dark"],
+body.dark-mode {
+  background-color: var(--bs-body-bg) !important;
+  color: var(--bs-body-color) !important;
+}
+
+// تخصيص الكروت في الوضع الداكن
+body[data-bs-theme="dark"] .card,
+body.dark-mode .card {
+  background-color: var(--bs-card-bg) !important;
+  border-color: var(--bs-card-border-color) !important;
+  color: var(--bs-body-color) !important;
+}
+
+// Offcanvas في الوضع الداكن
+body[data-bs-theme="dark"] .offcanvas,
+body.dark-mode .offcanvas {
+  background-color: var(--bs-offcanvas-bg) !important;
+  color: var(--bs-offcanvas-color) !important;
+}
+
+// تحسين رؤية الـ placeholder في الحقول
+body[data-bs-theme="dark"] input::placeholder,
+body.dark-mode input::placeholder,
+body[data-bs-theme="dark"] textarea::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #aaa !important;
+}
+
+// تحسين الـ focus outline في الوضع الداكن
+body[data-bs-theme="dark"] *,
+body.dark-mode * {
+  &:focus {
+    outline-color: #64b5f6 !important;
+  }
+}

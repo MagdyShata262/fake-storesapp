@@ -1,0 +1,65 @@
+.navbar {
+  transition: all 0.3s ease;
+
+  .navbar-brand {
+    font-weight: bold;
+
+    span {
+      transition: transform 0.3s ease;
+    }
+
+    &:hover span {
+      transform: scale(1.2);
+    }
+  }
+}
+
+
+.offcanvas {
+  transition: transform 0.3s ease;
+
+  .offcanvas-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+
+.btn-group {
+  .btn {
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+
+:host-context([dir="rtl"]) {
+  .navbar-nav {
+    padding-right: 0;
+  }
+
+  .me-2 {
+    margin-left: 0.5rem !important;
+    margin-right: 0 !important;
+  }
+
+  .ms-2 {
+    margin-right: 0.5rem !important;
+    margin-left: 0 !important;
+  }
+}
+
+
+.badge {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}

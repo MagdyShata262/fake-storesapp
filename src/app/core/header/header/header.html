@@ -1,45 +1,76 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+<nav class="navbar navbar-expand-lg" [class.navbar-dark]="themeService.theme() === 'dark'"
+  [class.navbar-light]="themeService.theme() === 'light'" [class.bg-dark]="themeService.theme() === 'dark'"
+  [class.bg-light]="themeService.theme() === 'light'" aria-label="Offcanvas navbar large">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Responsive offcanvas navbar</a>
+    <!-- الشعار -->
+    <a class="navbar-brand" routerLink="/">
+      <span *ngIf="themeService.rtl()">🚀</span>
+      Fake Stores App
+      <span *ngIf="!themeService.rtl()">🚀</span>
+    </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
-      aria-controls="offcanvasNavbar2">
+    <!-- زر القائمة -->
+    <button class="navbar-toggler" [class.navbar-toggler-dark]="themeService.theme() === 'dark'" type="button"
+      data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2"
+    <!-- القائمة المنبثقة -->
+    <div class="offcanvas offcanvas-end" [class.text-bg-dark]="themeService.theme() === 'dark'"
+      [class.text-bg-light]="themeService.theme() === 'light'" tabindex="-1" id="offcanvasNavbar2"
       aria-labelledby="offcanvasNavbar2Label">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasNavbar2Label">
-          Offcanvas
+          {{ themeService.rtl() ? 'القائمة' : 'Menu' }}
         </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button type="button" class="btn-close" [class.btn-close-white]="themeService.theme() === 'dark'"
+          data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
 
       <div class="offcanvas-body">
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+        <ul class="navbar-nav justify-content-end flex-grow-1" [class.pe-3]="!themeService.rtl()"
+          [class.ps-3]="themeService.rtl()">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
-              Home
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              {{ themeService.rtl() ? 'الرئيسية' : 'Home' }}
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" routerLink="/products" routerLinkActive="active">
+              {{ themeService.rtl() ? 'المنتجات' : 'Products' }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/about" routerLinkActive="active">
+              {{ themeService.rtl() ? 'من نحن' : 'About' }}
+            </a>
           </li>
         </ul>
 
+        <!-- أزرار التحكم -->
+        <div class="d-flex flex-column flex-md-row gap-2 mt-3 mt-md-0">
+          <!-- زر تبديل الثيم -->
+          <div class="btn-group" role="group">
+            <button class="btn btn-sm" [class.btn-light]="themeService.theme() === 'dark'"
+              [class.btn-dark]="themeService.theme() === 'light'" (click)="toggleTheme()">
+              <span *ngIf="themeService.theme() === 'light'">🌙</span>
+              <span *ngIf="themeService.theme() === 'dark'">🌞</span>
+              {{ themeService.rtl() ? (themeService.theme() === 'light' ? 'الوضع الداكن' : 'الوضع الفاتح') :
+              (themeService.theme() === 'light' ? 'Dark Mode' : 'Light Mode') }}
+            </button>
+          </div>
 
-
-        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-          <button class="btn btn-sm btn-light me-2" (click)="setTheme('light')">
-            🌞 Light
+          <!-- (اختياري) زر تبديل الاتجاه -->
+          <!--
+          <button class="btn btn-sm btn-outline-secondary" (click)="toggleRtl()">
+            {{ themeService.rtl() ? 'LTR' : 'RTL' }}
           </button>
-          <button class="btn btn-sm btn-dark me-2" (click)="setTheme('dark')">
-            🌜 Dark
-          </button>
+          -->
         </div>
       </div>
     </div>
   </div>
 </nav>
-<br class="py-3">
+
+<br class="py-3" />

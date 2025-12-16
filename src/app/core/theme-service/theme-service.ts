@@ -1,46 +1,118 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  // ========================
-  // STATE (Signals)
-  // ========================
-  // signals لتخزين الثيم و RTL
+  // إشارات لتخزين الثيم واتجاه النص
   theme = signal<'light' | 'dark'>('light');
   rtl = signal(false);
 
-  constructor() {}
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser = isPlatformBrowser(this.platformId);
 
-  // دالة لتحديث <html> عند تغير الإعدادات
-  private updateHtml() {
-    document.documentElement.setAttribute('data-bs-theme', this.theme());
-    document.documentElement.dir = this.rtl() ? 'rtl' : 'ltr';
+  constructor() {
+    // تهيئة الإعدادات (فقط في المتصفح)
+    if (this.isBrowser) {
+      this.initializeTheme();
+    }
+
+    // مراقبة التغييرات وتطبيقها (فقط في المتصفح)
+    effect(() => {
+      if (this.isBrowser) {
+        this.applyTheme();
+      }
+    });
   }
 
-  // دالة تغيير الثيم
-  setTheme(value: 'light' | 'dark') {
-    this.theme.set(value);
-    localStorage.setItem('theme', value);
-    this.updateHtml();
-  }
+  /**
+   * تهيئة الإعدادات من localStorage أو تفضيلات النظام
+   */
+  initializeTheme(): void {
+    // تحميل الثيم
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      this.theme.set(savedTheme);
+    } else {
+      // استخدام تفضيلات النظام
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.theme.set(prefersDark ? 'dark' : 'light');
+    }
 
-  // دالة تغيير RTL
-  setRtl(value: boolean) {
-    this.rtl.set(value);
-    localStorage.setItem('rtl', value ? '1' : '0');
-    this.updateHtml();
-  }
-
-  // ✅ دالة init لتطبيق الإعدادات من localStorage عند تشغيل التطبيق
-  init() {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
+    // تحميل اتجاه النص
     const savedRtl = localStorage.getItem('rtl');
+    this.rtl.set(savedRtl === '1');
+  }
 
-    if (savedTheme) this.theme.set(savedTheme);
-    if (savedRtl) this.rtl.set(savedRtl === '1');
+  /**
+   * تطبيق الإعدادات على المستند
+   */
+  applyTheme(): void {
+    // تطبيق الثيم
+    document.documentElement.setAttribute('data-bs-theme', this.theme());
 
-    this.updateHtml();
+    // تطبيق اتجاه النص
+    document.documentElement.dir = this.rtl() ? 'rtl' : 'ltr';
+
+    // إضافة/إزالة كلاس للوضع الداكن
+    if (this.theme() === 'dark') {
+      document.documentElement.classList.add('dark-mode');
+    } else {
+      document.documentElement.classList.remove('dark-mode');
+    }
+  }
+
+  /**
+   * تغيير الثيم
+   */
+  setTheme(theme: 'light' | 'dark'): void {
+    if (!this.isBrowser) return;
+    this.theme.set(theme);
+    localStorage.setItem('theme', theme);
+  }
+
+  /**
+   * تغيير اتجاه النص
+   */
+  setRtl(isRtl: boolean): void {
+    if (!this.isBrowser) return;
+    this.rtl.set(isRtl);
+    localStorage.setItem('rtl', isRtl ? '1' : '0');
+  }
+
+  /**
+   * تبديل الثيم
+   */
+  toggleTheme(): void {
+    if (!this.isBrowser) return;
+    const newTheme = this.theme() === 'light' ? 'dark' : 'light';
+    this.theme.set(newTheme);
+    localStorage.setItem('theme', newTheme);
+  }
+
+  /**
+   * تبديل اتجاه النص
+   */
+  toggleRtl(): void {
+    if (!this.isBrowser) return;
+    const newRtl = !this.rtl();
+    this.rtl.set(newRtl);
+    localStorage.setItem('rtl', newRtl ? '1' : '0');
+  }
+
+  /**
+   * الحصول على الثيم الحالي
+   */
+  get currentTheme(): 'light' | 'dark' {
+    return this.theme();
+  }
+
+  /**
+   * الحصول على اتجاه النص الحالي
+   */
+  get isRtl(): boolean {
+    return this.rtl();
   }
 }
