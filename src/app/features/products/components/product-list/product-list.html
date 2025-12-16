@@ -1,0 +1,39 @@
+<!-- product-list.component.html -->
+<div class="album py-4 products-section">
+  <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+      @for (product of products(); track product.id) {
+      <div class="col">
+        <div class="product-card h-100">
+          <!-- IMAGE -->
+          <div class="product-image">
+            <img ngOptimizedImage [src]="product.image" [alt]="product.title" width="150" height="150" loading="lazy" />
+          </div>
+
+          <!-- CONTENT -->
+          <div class="product-content">
+            <!-- TITLE (محدود بسطرين) -->
+            <h5 class="product-title" [title]="product.title">
+              {{ product.title }}
+            </h5>
+
+            <!-- FOOTER: السعر + التقييم -->
+            <div class="product-footer">
+              <span class="price" aria-label="السعر {{ product.price | number }} دولار أمريكي">
+                ${{ product.price | number:'1.2-2' }}
+              </span>
+
+              <div class="rating"
+                aria-label="تقييم {{ product.rating.rate }} من 5 بناءً على {{ product.rating.count }} تقييم">
+                <span aria-hidden="true">
+                  ⭐ {{ product.rating.rate }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>

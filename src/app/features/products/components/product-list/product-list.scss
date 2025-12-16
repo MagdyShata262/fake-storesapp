@@ -1,0 +1,90 @@
+// product-list.component.scss
+.products-section {
+  background-color: #2b2f36;
+}
+
+.product-card {
+  background: #1f2329;
+  border-radius: 8px; // أصغر من 14px
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.product-image {
+  position: relative;
+  height: 140px; // محدد وقصير
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+  padding: 0.6rem;
+
+  img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+
+    .product-card:hover & {
+      transform: scale(1.03);
+    }
+  }
+}
+
+.product-content {
+  padding: 0.75rem 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-title {
+  font-size: 0.875rem; // ~14px
+  font-weight: 600;
+  color: #eaeaea;
+  margin: 0 0 0.5rem;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; // سطرين فقط
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  gap: 0.4rem;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.rating {
+  font-size: 0.75rem; // أصغر
+  color: #f5c451;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+
+  span[aria-hidden='true'] {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+  }
+}
