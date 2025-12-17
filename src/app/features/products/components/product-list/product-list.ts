@@ -3,11 +3,12 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@a
 import { ProductServices } from '../../services/product-services/product-services';
 import { RouterModule } from '@angular/router';
 import { ProductFilter } from '../product-filter/product-filter';
+import { ProductPagination } from '../product-pagination/product-pagination';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, ProductFilter],
+  imports: [CommonModule, RouterModule, ProductFilter, ProductPagination],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

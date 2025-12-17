@@ -1,1 +1,20 @@
-<p>product-pagination works!</p>
+<nav *ngIf="totalPages() > 1">
+  <ul class="pagination justify-content-center mt-4">
+    <!-- Previous -->
+    <li class="page-item" [class.disabled]="currentPage() === 1">
+      <button class="page-link" (click)="prevPage()">السابق</button>
+    </li>
+
+    <!-- Pages -->
+    @for (page of pages(); track page){
+    <li class="page-item" [class.active]="currentPage() === page">
+      <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
+    </li>
+    }
+
+    <!-- Next -->
+    <li class="page-item" [class.disabled]="currentPage() === totalPages()">
+      <button class="page-link" (click)="nextPage()">التالي</button>
+    </li>
+  </ul>
+</nav>

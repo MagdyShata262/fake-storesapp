@@ -1,5 +1,5 @@
 <!-- Products Section -->
-<section class="products-section py-5 mt-5" (window:scroll)="onScroll()">
+<section class="products-section py-5 mt-5">
   <div class="container">
     <app-product-filter></app-product-filter>
     <!-- LOADING -->
@@ -71,6 +71,13 @@
       }
 
     </div>
+
+    <!-- PAGINATION -->
+    <!-- <app-product-pagination *ngIf="pagination.totalPages() > 1"></app-product-pagination> -->
+
+    <app-product-pagination></app-product-pagination>
+
+
     }
 
   </div>
