@@ -1,39 +1,77 @@
-<!-- product-list.component.html -->
-<div class="album py-4 products-section">
+<!-- Products Section -->
+<section class="products-section py-5 mt-5" (window:scroll)="onScroll()">
   <div class="container">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+    <app-product-filter></app-product-filter>
+    <!-- LOADING -->
+    @if (loading()) {
+    <div class="row">
+      @for (i of [1,2,3,4,5,6,7,8]; track i) {
+      <div class="col-6 col-md-4 col-lg-3 mb-4">
+        <div class="product-skeleton"></div>
+      </div>
+      }
+    </div>
+    }
+
+    <!-- ERROR -->
+    @else if (error()) {
+    <div class="alert alert-danger text-center">
+      ❌ حدث خطأ أثناء تحميل المنتجات
+    </div>
+    }
+
+    <!-- EMPTY -->
+    @else if (!products().length) {
+    <div class="text-center py-5 text-muted">
+      لا توجد منتجات حالياً
+    </div>
+    }
+
+    <!-- PRODUCTS -->
+    @else {
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4" role="list" aria-label="قائمة المنتجات">
+
       @for (product of products(); track product.id) {
-      <div class="col">
-        <div class="product-card h-100">
+      <div class="col" role="listitem">
+        <article class="product-card h-100">
+
           <!-- IMAGE -->
           <div class="product-image">
-            <img ngOptimizedImage [src]="product.image" [alt]="product.title" width="150" height="150" loading="lazy" />
+            <img ngOptimizedImage [src]="product.image" [alt]="product.title" width="180" height="180"
+              priority="false" />
           </div>
 
           <!-- CONTENT -->
           <div class="product-content">
-            <!-- TITLE (محدود بسطرين) -->
-            <h5 class="product-title" [title]="product.title">
-              {{ product.title }}
-            </h5>
 
-            <!-- FOOTER: السعر + التقييم -->
+            <!-- TITLE -->
+            <h3 class="product-title" [title]="product.title">
+              {{ product.title }}
+            </h3>
+
+            <!-- PRICE + RATING -->
             <div class="product-footer">
-              <span class="price" aria-label="السعر {{ product.price | number }} دولار أمريكي">
-                ${{ product.price | number:'1.2-2' }}
+              <span class="price" aria-label="السعر {{ product.price }} دولار">
+                {{ product.price | currency:'USD':'symbol':'1.2-2' }}
               </span>
 
-              <div class="rating"
-                aria-label="تقييم {{ product.rating.rate }} من 5 بناءً على {{ product.rating.count }} تقييم">
-                <span aria-hidden="true">
-                  ⭐ {{ product.rating.rate }}
-                </span>
-              </div>
+              <span class="rating" aria-label="تقييم {{ product.rating.rate }} من 5">
+                ⭐ {{ product.rating.rate }}
+              </span>
             </div>
+
+            <!-- ACTION -->
+            <a [routerLink]="['/products', product.id]" class="btn btn-outline-primary btn-sm w-100 mt-3">
+              عرض التفاصيل
+            </a>
+
           </div>
-        </div>
+        </article>
       </div>
       }
+
     </div>
+    }
+
   </div>
-</div>
+</section>

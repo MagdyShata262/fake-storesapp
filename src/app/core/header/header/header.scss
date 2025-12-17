@@ -1,3 +1,6 @@
+// src/app/core/header/header.scss
+
+// === Navbar ===
 .navbar {
   transition: all 0.3s ease;
 
@@ -14,16 +17,36 @@
   }
 }
 
-
+// === Offcanvas ===
 .offcanvas {
   transition: transform 0.3s ease;
 
   .offcanvas-header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
+
+  .offcanvas-body {
+    padding: 1rem;
+  }
+
+  .nav-link {
+    color: inherit;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+
+    &:hover,
+    &.active {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
-
+// === Button Group ===
 .btn-group {
   .btn {
     transition: all 0.2s ease;
@@ -38,8 +61,8 @@
   }
 }
 
-
-:host-context([dir="rtl"]) {
+// === RTL Support ===
+:host-context([dir='rtl']) {
   .navbar-nav {
     padding-right: 0;
   }
@@ -55,7 +78,7 @@
   }
 }
 
-
+// === Badges ===
 .badge {
   transition: all 0.3s ease;
 

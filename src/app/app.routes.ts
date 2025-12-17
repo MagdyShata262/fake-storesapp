@@ -7,5 +7,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/products/components/product-list/product-list').then((c) => c.ProductList),
   },
-  // أضف مسارات أخرى لاحقًا (مثل product/:id, about, ... )
+  // 📄 Product Detail
+  {
+    path: 'products/:id',
+    loadComponent: () =>
+      import('./features/products/components/product-detali/product-detali').then(
+        (c) => c.ProductDetali
+      ),
+  },
 ];

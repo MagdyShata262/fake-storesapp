@@ -1,0 +1,14 @@
+<div class="filters-container d-flex flex-column flex-md-row gap-3 mb-4 align-items-start align-items-md-center">
+
+  <!-- Search -->
+  <input type="text" class="form-control" placeholder="ابحث عن منتج..." (input)="onSearch($event)" />
+
+  <!-- Sort -->
+  <select class="form-select" (change)="onSort($event)">
+    <option value="default">الترتيب الافتراضي</option>
+    <option value="priceAsc">السعر: من الأقل للأعلى</option>
+    <option value="priceDesc">السعر: من الأعلى للأقل</option>
+    <option value="ratingDesc">التقييم: الأعلى أولاً</option>
+  </select>
+
+</div>

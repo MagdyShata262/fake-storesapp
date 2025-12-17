@@ -1,3 +1,175 @@
 /* You can add global styles to this file, and also import other style files */
 @use "bootstrap/scss/bootstrap";
 @use 'bootstrap-icons/font/bootstrap-icons.css';
+
+// src/app/app.scss
+
+// src/app/app.scss
+
+// === متغيرات الألوان ===
+:root {
+  --app-bg: #ffffff;
+  --app-text: #212529;
+  --navbar-bg: #3F51B5;
+  --navbar-text: #212529; // ← نص داكن في الوضع الفاتح
+
+  // 🔹 كرت فاتح في الوضع الفاتح
+  --card-bg: #fafafa;
+  --card-bg-hover: #f0f0f0;
+  --card-border: #e0e0e0;
+
+  // 🔹 كرت داكن في الوضع الداكن
+  --card-bg-dark: #2d2d2d;
+  --card-bg-dark-hover: #333333;
+  --card-border-dark: #3a3a3a;
+
+  --price-color: #ff6600;
+  --rating-color: #ffcc00;
+}
+
+[data-bs-theme='dark'] {
+  --app-bg: #1e1e1e;
+  --app-text: #e0e0e0;
+  --navbar-bg: #1a1a1a;
+  --navbar-text: #ffffff;
+
+  // 🔹 عكس: كرت داكن في الوضع الداكن
+  --card-bg: var(--card-bg-dark);
+  --card-bg-hover: var(--card-bg-dark-hover);
+  --card-border: var(--card-border-dark);
+
+  --price-color: #ff9900;
+  --rating-color: #ffcc00;
+
+  // Bootstrap overrides
+  --bs-body-bg: var(--app-bg);
+  --bs-body-color: var(--app-text);
+  --bs-card-bg: var(--card-bg);
+  --bs-card-border-color: var(--card-border);
+  --bs-offcanvas-bg: var(--card-bg);
+  --bs-offcanvas-color: var(--app-text);
+  --bs-link-color: #64b5f6;
+  --bs-link-hover-color: #90caf9;
+}
+
+// === تنسيقات عامة ===
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// === Navbar ===
+.navbar {
+  background-color: var(--navbar-bg) !important;
+  color: var(--navbar-text) !important;
+
+  .navbar-brand,
+  .nav-link {
+    color: var(--navbar-text) !important;
+
+    &:hover,
+    &.active {
+      color: #ffffff !important;
+      opacity: 0.85;
+    }
+  }
+
+  .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    color: var(--navbar-text) !important;
+  }
+}
+
+// === Cards ===
+.card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--card-border) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    background-color: var(--card-bg-hover) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// === عناصر المنتج ===
+.price {
+  color: var(--price-color) !important;
+  font-weight: bold;
+}
+
+.rating {
+  color: var(--rating-color) !important;
+  font-size: 0.85rem;
+}
+
+// === Placeholder ===
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+// === Offcanvas ===
+.offcanvas {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+// === منطقة المحتوى الرئيسية ===
+.app-main {
+  padding-top: 56px;
+  min-height: calc(100vh - 56px);
+  transition: background-color 0.3s ease;
+}
+
+// === دعم RTL ===
+html[dir='rtl'] {
+
+  /* Navbar */
+  .navbar-nav {
+    padding-inline: 0;
+  }
+
+  /* Offcanvas */
+  .offcanvas-end {
+    inset-inline-end: auto;
+    inset-inline-start: 0;
+    transform: translateX(-100%);
+  }
+
+  .offcanvas.show {
+    transform: translateX(0);
+  }
+
+  /* Margins */
+  .me-2 {
+    margin-inline-start: 0.5rem !important;
+    margin-inline-end: 0 !important;
+  }
+
+  .ms-2 {
+    margin-inline-end: 0.5rem !important;
+    margin-inline-start: 0 !important;
+  }
+
+  .ms-auto {
+    margin-inline-start: 0 !important;
+    margin-inline-end: auto !important;
+  }
+
+  /* Padding */
+  .pe-3 {
+    padding-inline-start: 1rem !important;
+    padding-inline-end: 0 !important;
+  }
+
+  .ps-3 {
+    padding-inline-end: 1rem !important;
+    padding-inline-start: 0 !important;
+  }
+
+  /* Text */
+  .nav-link {
+    text-align: start;
+  }
+}
