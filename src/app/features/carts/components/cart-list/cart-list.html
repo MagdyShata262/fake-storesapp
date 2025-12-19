@@ -1,0 +1,53 @@
+<!-- <p>cart-list works!</p> -->
+<section class="container py-5">
+  <h2 class="mb-4 text-center">🛒 Carts ({{ totalCarts() }})</h2>
+
+  @if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border"></div>
+  </div>
+  }
+
+  @else if (error()) {
+  <div class="alert alert-danger text-center">
+    {{ error() }}
+  </div>
+  }
+
+  @else {
+  <div class="row g-4">
+
+    @for (cart of carts(); track cart.id) {
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100">
+
+        <div class="card-body">
+          <h5 class="card-title">Cart #{{ cart.id }}</h5>
+
+          <p class="mb-1">
+            👤 User ID:
+            <strong>{{ cart.userId }}</strong>
+          </p>
+
+          <p class="mb-1">
+            📅 Date:
+            {{ cart.date | date:'mediumDate' }}
+          </p>
+
+          <p class="mb-2">
+            🧺 Items:
+            <strong>{{ cart.products.length }}</strong>
+          </p>
+
+          <a [routerLink]="['/carts', cart.id]" class="btn btn-outline-primary btn-sm w-100">
+            View Details
+          </a>
+        </div>
+
+      </div>
+    </div>
+    }
+
+  </div>
+  }
+</section>

@@ -1,0 +1,70 @@
+<p>cart-detali works!</p>
+<section class="container py-5 mt-5">
+
+  <!-- Loading -->
+  @if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border"></div>
+  </div>
+  }
+
+  <!-- Error -->
+  @else if (error()) {
+  <div class="alert alert-danger text-center">
+    {{ error() }}
+  </div>
+  }
+
+  <!-- Content -->
+  @else if (cart()) {
+
+  <h2 class="mb-4">
+    🛒 Cart #{{ cart()?.id }}
+  </h2>
+
+  <p class="text-muted">
+    User ID: {{ cart()?.userId }} |
+    Date: {{ cart()?.date | date }}
+  </p>
+
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>المنتج</th>
+          <th>السعر</th>
+          <th>الكمية</th>
+          <th>الإجمالي</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (item of products(); track item.productId) {
+        <tr>
+          <td class="d-flex align-items-center gap-3">
+            <img [src]="item.product.image" width="50" />
+            {{ item.product.title }}
+          </td>
+
+          <td>
+            {{ item.product.price | currency:'USD' }}
+          </td>
+
+          <td>
+            {{ item.quantity }}
+          </td>
+
+          <td>
+            {{ item.product.price * item.quantity | currency:'USD' }}
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="text-end fs-5 fw-bold mt-3">
+    <!-- Total: {{ totalPrice() | currency:'USD' }} -->
+  </div>
+  }
+</section>

@@ -15,4 +15,16 @@ export const routes: Routes = [
         (c) => c.ProductDetali
       ),
   },
+
+  {
+    path: 'carts',
+    loadComponent: () =>
+      import('./features/carts/components/cart-list/cart-list').then((m) => m.CartList),
+  },
+
+  {
+    path: 'carts/:id',
+    loadComponent: () =>
+      import('./features/carts/components/cart-detali/cart-detali').then((m) => m.CartDetali),
+  },
 ];
