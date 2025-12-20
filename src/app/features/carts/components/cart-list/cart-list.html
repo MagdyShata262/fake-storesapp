@@ -2,52 +2,93 @@
 <section class="container py-5">
   <h2 class="mb-4 text-center">🛒 Carts ({{ totalCarts() }})</h2>
 
+  <!-- SKELETON -->
   @if (loading()) {
-  <div class="text-center py-5">
-    <div class="spinner-border"></div>
+  <div class="row g-4">
+    @for (i of [1,2,3,4,5,6]; track i) {
+    <div class="col-md-6 col-lg-4">
+      <div class="skeleton-card"></div>
+    </div>
+    }
   </div>
   }
 
+  <!-- ERROR -->
   @else if (error()) {
   <div class="alert alert-danger text-center">
     {{ error() }}
   </div>
   }
 
+  <!-- LIST -->
   @else {
   <div class="row g-4">
-
     @for (cart of carts(); track cart.id) {
     <div class="col-md-6 col-lg-4">
       <div class="card shadow-sm h-100">
 
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
           <h5 class="card-title">Cart #{{ cart.id }}</h5>
 
-          <p class="mb-1">
-            👤 User ID:
-            <strong>{{ cart.userId }}</strong>
-          </p>
+          <p class="mb-1">👤 User ID: <strong>{{ cart.userId }}</strong></p>
+          <p class="mb-1">📅 {{ cart.date | date:'mediumDate' }}</p>
+          <p class="mb-3">🧺 Items: <strong>{{ cart.products.length }}</strong></p>
 
-          <p class="mb-1">
-            📅 Date:
-            {{ cart.date | date:'mediumDate' }}
-          </p>
-
-          <p class="mb-2">
-            🧺 Items:
-            <strong>{{ cart.products.length }}</strong>
-          </p>
-
-          <a [routerLink]="['/carts', cart.id]" class="btn btn-outline-primary btn-sm w-100">
+          <a [routerLink]="['/carts', cart.id]" class="btn btn-outline-primary btn-sm mt-auto">
             View Details
           </a>
+
+          <button class="btn btn-outline-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#deleteModal"
+            (click)="openDeleteModal(cart)">
+            Delete
+          </button>
         </div>
 
       </div>
     </div>
     }
-
   </div>
   }
 </section>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">⚠️ Confirm Delete</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        هل أنت متأكد من حذف السلة
+        <strong>#{{ cartToDelete()?.id }}</strong> ؟
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmDelete()">
+          Delete
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+@if (showToast()) {
+<div class="toast-container position-fixed top-0  p-5 end-0 mt-5">
+  <div class="toast show   ">
+    <div class="toast-header">
+      <strong class="me-auto">Carts</strong>
+      <small>now</small>
+      <button class="btn-close" (click)="showToast.set(false)"></button>
+    </div>
+    <div class="toast-body">
+      ✅ Cart deleted successfully
+    </div>
+  </div>
+</div>
+}

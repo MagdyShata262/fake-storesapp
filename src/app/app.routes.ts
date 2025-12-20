@@ -27,4 +27,16 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/carts/components/cart-detali/cart-detali').then((m) => m.CartDetali),
   },
+
+  {
+    path: 'create',
+    loadComponent: () =>
+      import('./features/carts/components/cart-create/cart-create').then((m) => m.CartCreate),
+  },
+
+  {
+    path: 'edit:id',
+    loadComponent: () =>
+      import('./features/carts/components/cart-edit/cart-edit').then((m) => m.CartEdit),
+  },
 ];

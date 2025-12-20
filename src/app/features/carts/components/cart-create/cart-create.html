@@ -1,0 +1,79 @@
+<p>cart-create works!</p>
+<!-- Trigger Button -->
+<button type="button" class="btn btn-success mb-4" data-bs-toggle="modal" data-bs-target="#cartCreateModal">
+  ➕ Create New Cart
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="cartCreateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <form class="modal-content" [formGroup]="form" (ngSubmit)="submit()">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 class="modal-title">🛒 Create Cart</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <!-- USER -->
+        <div class="mb-3">
+          <label class="form-label">User ID</label>
+          <input type="number" class="form-control" formControlName="userId" />
+        </div>
+
+        <!-- DATE -->
+        <div class="mb-3">
+          <label class="form-label">Date</label>
+          <input type="date" class="form-control" formControlName="date" />
+        </div>
+
+        <!-- PRODUCTS -->
+        <h6 class="mt-4">Products</h6>
+
+        <div formArrayName="products">
+          @for (product of products.controls; track $index) {
+          <div [formGroupName]="$index" class="row g-2 align-items-end mb-2">
+
+            <div class="col">
+              <label class="form-label">Product ID</label>
+              <input type="number" class="form-control" formControlName="productId" />
+            </div>
+
+            <div class="col">
+              <label class="form-label">Quantity</label>
+              <input type="number" class="form-control" formControlName="quantity" />
+            </div>
+
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline-danger" (click)="removeProduct($index)"
+                *ngIf="products.length > 1">
+                ✖
+              </button>
+            </div>
+
+          </div>
+          }
+        </div>
+
+        <button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="addProduct()">
+          ➕ Add Product
+        </button>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-success" [disabled]="form.invalid">
+          Save Cart
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

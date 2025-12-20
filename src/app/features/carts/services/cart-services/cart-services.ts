@@ -2,11 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Cart, CartProductView } from '../../models/cart';
 import { Product } from '../../../products/models/product-interface';
-import { forkJoin, map } from 'rxjs';
+import { forkJoin, map, of, tap } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class CartServices {
   private http = inject(HttpClient);
 
@@ -25,34 +23,46 @@ export class CartServices {
   private readonly _cartProducts = signal<CartProductView[]>([]);
   readonly cartProducts = this._cartProducts.asReadonly();
 
-  readonly loading = signal(false);
+  readonly loadingList = signal(false);
+  readonly loadingDetails = signal(false);
   readonly error = signal<string | null>(null);
 
   /* ===============================
-     FETCH ALL CARTS
+     CACHE
   =============================== */
-  loadCarts() {
-    this.loading.set(true);
+  private cartsLoaded = false;
+  private readonly productCache = new Map<number, Product>();
+
+  /* ===============================
+     FETCH ALL CARTS (WITH CACHE)
+  =============================== */
+  loadCarts(force = false) {
+    if (this.cartsLoaded && !force) {
+      console.log('📦 Carts from cache');
+      return;
+    }
+
+    this.loadingList.set(true);
     this.error.set(null);
 
     this.http.get<Cart[]>(this.API_URL).subscribe({
       next: (res) => {
         this._carts.set(res);
-        this.loading.set(false);
-        console.log('🛒 All Carts:', res);
+        this.cartsLoaded = true;
+        this.loadingList.set(false);
       },
       error: () => {
-        this.error.set('فشل تحميل سلال المشتريات');
-        this.loading.set(false);
+        this.error.set('فشل تحميل السلال');
+        this.loadingList.set(false);
       },
     });
   }
 
   /* ===============================
-     FETCH CART DETAILS
+     CART DETAILS
   =============================== */
   loadCartDetails(cartId: number) {
-    this.loading.set(true);
+    this.loadingDetails.set(true);
     this.error.set(null);
 
     this.http.get<Cart>(`${this.API_URL}/${cartId}`).subscribe({
@@ -62,39 +72,70 @@ export class CartServices {
       },
       error: () => {
         this.error.set('فشل تحميل تفاصيل السلة');
-        this.loading.set(false);
+        this.loadingDetails.set(false);
       },
     });
   }
 
   /* ===============================
-     LOAD PRODUCTS OF CART
+     CART PRODUCTS (WITH CACHE)
   =============================== */
   private loadCartProducts(items: { productId: number; quantity: number }[]) {
-    const requests = items.map((item) =>
-      this.http.get<Product>(`${this.PRODUCT_API}/${item.productId}`).pipe(
+    const requests = items.map((item) => {
+      if (this.productCache.has(item.productId)) {
+        return of({
+          productId: item.productId,
+          quantity: item.quantity,
+          product: this.productCache.get(item.productId)!,
+        });
+      }
+
+      return this.http.get<Product>(`${this.PRODUCT_API}/${item.productId}`).pipe(
+        tap((p) => this.productCache.set(item.productId, p)),
         map((product) => ({
           productId: item.productId,
           quantity: item.quantity,
           product,
         }))
-      )
-    );
+      );
+    });
 
     forkJoin(requests).subscribe({
       next: (products) => {
         this._cartProducts.set(products);
-        this.loading.set(false);
+        this.loadingDetails.set(false);
       },
       error: () => {
         this.error.set('فشل تحميل منتجات السلة');
-        this.loading.set(false);
+        this.loadingDetails.set(false);
       },
     });
   }
 
   /* ===============================
-     DERIVED DATA
+     CREATE
+  =============================== */
+  addCart(cart: Omit<Cart, 'id'>) {
+    return this.http.post<Cart>(this.API_URL, cart).pipe(
+      tap((res) => {
+        this._carts.update((carts) => [...carts, res]);
+      })
+    );
+  }
+
+  /* ===============================
+     DELETE
+  =============================== */
+  deleteCart(cartId: number) {
+    return this.http.delete(`${this.API_URL}/${cartId}`).pipe(
+      tap(() => {
+        this._carts.update((carts) => carts.filter((c) => c.id !== cartId));
+      })
+    );
+  }
+
+  /* ===============================
+     DERIVED
   =============================== */
   readonly totalCarts = computed(() => this.carts().length);
 
@@ -103,7 +144,7 @@ export class CartServices {
   );
 
   /* ===============================
-     RESET (OPTIONAL)
+     RESET
   =============================== */
   clearSelectedCart() {
     this._selectedCart.set(null);

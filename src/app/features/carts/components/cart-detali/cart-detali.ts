@@ -17,7 +17,7 @@ export class CartDetali {
   readonly cart = this.cartService.selectedCart;
   readonly products = this.cartService.cartProducts;
   readonly total = this.cartService.totalCartPrice;
-  readonly loading = this.cartService.loading;
+  readonly loading = this.cartService.loadingDetails;
   readonly error = this.cartService.error;
 
   constructor() {
