@@ -1,6 +1,4 @@
-// src/app/features/carts/components/cart-detail/cart-detail.component.scss
-
-// src/app/features/carts/components/cart-detail/cart-detail.component.scss
+// src/app/features/carts/components/checkout/checkout.component.scss
 
 // ==============================
 // TABLE STYLING
@@ -8,9 +6,9 @@
 .table {
   thead th {
     font-weight: 600;
-    border-bottom: 2px solid var(--card-border, #dee2e6);
+    padding: 0.75rem 1rem;
     background-color: var(--card-bg, #f8f9fa);
-    padding: 1rem;
+    border-bottom: 2px solid var(--card-border, #dee2e6);
   }
 
   tbody tr {
@@ -39,6 +37,11 @@
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
+  .card-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--card-border, #dee2e6);
+  }
+
   .card-body {
     padding: 1.5rem;
   }
@@ -66,6 +69,29 @@
 }
 
 // ==============================
+// ALERT STYLING (Success Message)
+// ==============================
+.alert {
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+
+  h4 {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  .btn {
+    margin-top: 0.5rem;
+    width: auto;
+  }
+}
+
+// ==============================
 // DARK MODE SUPPORT
 // ==============================
 :global(body[data-bs-theme='dark']) {
@@ -85,17 +111,28 @@
     }
   }
 
-  .bg-light {
-    background-color: #2d2d2d !important;
-    border-color: #3a3a3a;
-  }
-
   .card {
     background-color: #1f2329;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
+  .bg-light {
+    background-color: #2d2d2d !important;
+    border-color: #3a3a3a;
+  }
+
   .text-muted {
     color: #9aa0a6 !important;
+  }
+
+  .alert {
+    background-color: #2d2d2d !important;
+    border-color: #3a3a3a !important;
+    color: #e0e0e0 !important;
+
+    h4,
+    p {
+      color: #e0e0e0;
+    }
   }
 }

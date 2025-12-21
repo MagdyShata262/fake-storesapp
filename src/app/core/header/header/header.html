@@ -1,6 +1,6 @@
 <!-- src/app/core/header/header.html -->
 <nav class="navbar fixed-top navbar-expand-lg" [class.bg-dark]="theme.isDark()" [class.bg-light]="!theme.isDark()"
-  [class.navbar-dark]="theme.isDark()" [class.navbar-light]="!theme.isDark()" aria-label="Main navigation">
+  aria-label="Main navigation">
   <div class="container-fluid">
     <!-- Brand -->
     <a class="navbar-brand" routerLink="/">
@@ -22,7 +22,6 @@
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
           {{ theme.rtl() ? 'القائمة' : 'Menu' }}
         </h5>
-
         <button type="button" class="btn-close" [class.btn-close-white]="theme.isDark()" data-bs-dismiss="offcanvas"
           aria-label="Close"></button>
       </div>
@@ -42,18 +41,18 @@
             </a>
           </li>
 
-
+          <!-- ✅ سلة التسوق في القائمة -->
           <li class="nav-item">
-            <a class="nav-link" routerLink="/carts" routerLinkActive="active">
-              {{ theme.rtl() ? 'carts' : 'carts' }}
+            <a class="nav-link position-relative" routerLink="/carts" routerLinkActive="active">
+              <i class="bi bi-cart"></i>
+              {{ theme.rtl() ? 'سلتي' : 'Cart' }}
+              @if (totalItems() > 0) {
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ totalItems() }}
+              </span>
+              }
             </a>
           </li>
-
-
-
-
-
-
         </ul>
 
         <!-- Actions -->
@@ -66,5 +65,29 @@
         </div>
       </div>
     </div>
+
+    <!-- ✅ سلة التسوق في الـ navbar الرئيسي (بجانب-toggler) -->
+    <a routerLink="/cart" class="nav-link position-relative d-lg-none d-flex align-items-center"
+      style="margin-inline-start: auto; color: var(--navbar-text) !important;">
+      <i class="bi bi-cart fs-4"></i>
+      @if (totalItems() > 0) {
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+        style="font-size: 0.65rem; padding: 0.2em 0.4em;">
+        {{ totalItems() }}
+      </span>
+      }
+    </a>
   </div>
+
+  <!-- ✅ سلة التسوق في الـ navbar (للجوال والديسكتوب) -->
+  <a routerLink="/cart" class="nav-link position-relative d-none d-lg-flex align-items-center"
+    style="color: var(--navbar-text) !important;">
+    <i class="bi bi-cart fs-5"></i>
+    @if (totalItems() > 0) {
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+      style="font-size: 0.7rem;">
+      {{ totalItems() }}
+    </span>
+    }
+  </a>
 </nav>

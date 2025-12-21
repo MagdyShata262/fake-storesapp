@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductServices } from '../../services/product-services/product-services';
 import {
   Observable,
@@ -14,6 +14,7 @@ import {
 } from 'rxjs';
 import { Product } from '../../models/product-interface';
 import { CommonModule } from '@angular/common';
+import { CartServices } from '../../../carts/services/cart-services/cart-services';
 
 @Component({
   selector: 'app-product-detali',
@@ -24,7 +25,8 @@ import { CommonModule } from '@angular/common';
 export class ProductDetali {
   private route = inject(ActivatedRoute);
   private productService = inject(ProductServices);
-
+  private cartService = inject(CartServices);
+  private router = inject(Router); // ← حقن Router
   // =============================
   // STATE STREAM
   // =============================
@@ -63,4 +65,24 @@ export class ProductDetali {
 
     shareReplay({ bufferSize: 1, refCount: true }) // ✅ يمنع تكرار الطلب
   );
+
+  addToCart(productId: number) {
+    this.cartService.addToCart(productId, 1);
+    setTimeout(() => {
+      this.router.navigate(['/carts']);
+    }, 100);
+  }
+  // addToCart(productId: number) {
+  //   this.cartService.addToCart(productId).subscribe({
+  //     next: () => {
+  //       alert('تم إضافة المنتج إلى السلة!');
+  //       setTimeout(() => {
+  //         this.router.navigate(['/carts']);
+  //       }, 100);
+  //     },
+  //     error: () => {
+  //       alert('فشل إضافة المنتج إلى السلة.');
+  //     },
+  //   });
+  // }
 }

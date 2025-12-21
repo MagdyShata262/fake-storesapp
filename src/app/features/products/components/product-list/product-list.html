@@ -64,7 +64,10 @@
             <a [routerLink]="['/products', product.id]" class="btn btn-outline-primary btn-sm w-100 mt-3">
               عرض التفاصيل
             </a>
-
+            <button class="btn btn-outline-success btn-sm w-100 mt-2" (click)="addToCart(product.id)"
+              aria-label="إضافة {{ product.title }} إلى السلة">
+              إضافة إلى السلة
+            </button>
           </div>
         </article>
       </div>
@@ -72,8 +75,7 @@
 
     </div>
 
-    <!-- PAGINATION -->
-    <!-- <app-product-pagination *ngIf="pagination.totalPages() > 1"></app-product-pagination> -->
+
 
     <app-product-pagination></app-product-pagination>
 

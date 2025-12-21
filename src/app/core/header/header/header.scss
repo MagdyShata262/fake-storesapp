@@ -15,6 +15,23 @@
       transform: scale(1.2);
     }
   }
+
+  // ✅ تنسيق رمز السلة في الـ navbar
+  .nav-link {
+    &.position-relative {
+      i.bi-cart {
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+      }
+
+      .badge {
+        font-size: 0.7rem;
+        padding: 0.2em 0.4em;
+        border-radius: 50%;
+        line-height: 1;
+      }
+    }
+  }
 }
 
 // === Offcanvas ===
@@ -84,5 +101,13 @@
 
   &:hover {
     transform: scale(1.05);
+  }
+}
+
+// === دعم الوضع الداكن للـ badge ===
+:global(body[data-bs-theme='dark']) {
+  .badge.bg-danger {
+    background-color: #dc3545 !important;
+    color: white !important;
   }
 }

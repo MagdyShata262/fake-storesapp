@@ -35,8 +35,8 @@ export const routes: Routes = [
   },
 
   {
-    path: 'edit:id',
+    path: 'checkout',
     loadComponent: () =>
-      import('./features/carts/components/cart-edit/cart-edit').then((m) => m.CartEdit),
+      import('./features/carts/components/checkout/checkout').then((c) => c.Checkout),
   },
 ];

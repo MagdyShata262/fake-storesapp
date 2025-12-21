@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { ProductServices } from '../../services/product-services/product-services';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ProductFilter } from '../product-filter/product-filter';
 import { ProductPagination } from '../product-pagination/product-pagination';
+import { CartServices } from '../../../carts/services/cart-services/cart-services';
 
 @Component({
   selector: 'app-product-list',
@@ -15,6 +16,8 @@ import { ProductPagination } from '../product-pagination/product-pagination';
 })
 export class ProductList implements OnInit {
   private productService = inject(ProductServices);
+  private cartService = inject(CartServices);
+  private router = inject(Router); // ← حقن Router
 
   // =============================
   // VIEW STATE (READ ONLY)
@@ -35,4 +38,25 @@ export class ProductList implements OnInit {
       this.productService.loadMore();
     }
   }
+
+  addToCart(productId: number) {
+    this.cartService.addToCart(productId, 1);
+    setTimeout(() => {
+      this.router.navigate(['/carts']);
+    }, 100);
+  }
+
+  // addToCart(productId: number) {
+  //   this.cartService.addToCart(productId).subscribe({
+  //     next: () => {
+  //       alert('تم إضافة المنتج إلى السلة!');
+  //       setTimeout(() => {
+  //         this.router.navigate(['/carts']);
+  //       }, 100);
+  //     },
+  //     error: () => {
+  //       alert('فشل إضافة المنتج إلى السلة.');
+  //     },
+  //   });
+  // }
 }

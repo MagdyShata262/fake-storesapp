@@ -3,7 +3,12 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Cart, CartProductView } from '../../models/cart';
 import { Product } from '../../../products/models/product-interface';
 import { forkJoin, map, of, tap } from 'rxjs';
-
+import { ProductServices } from '../../../products/services/product-services/product-services';
+export interface CartItem {
+  productId: number;
+  quantity: number;
+  product: Product;
+}
 @Injectable({ providedIn: 'root' })
 export class CartServices {
   private http = inject(HttpClient);
@@ -123,15 +128,14 @@ export class CartServices {
     );
   }
 
-  /* ===============================
-     DELETE
-  =============================== */
   deleteCart(cartId: number) {
-    return this.http.delete(`${this.API_URL}/${cartId}`).pipe(
-      tap(() => {
-        this._carts.update((carts) => carts.filter((c) => c.id !== cartId));
-      })
-    );
+    const prev = this._carts();
+
+    this._carts.update((c) => c.filter((x) => x.id !== cartId));
+
+    this.http.delete(`${this.API_URL}/${cartId}`).subscribe({
+      error: () => this._carts.set(prev),
+    });
   }
 
   /* ===============================
@@ -149,5 +153,91 @@ export class CartServices {
   clearSelectedCart() {
     this._selectedCart.set(null);
     this._cartProducts.set([]);
+  }
+
+  // src/app/features/carts/services/cart-services.ts
+
+  /* ===============================
+   ADD TO CART
+=============================== */
+  // addToCart(productId: number, quantity = 1) {
+  //   const cartItem = { productId, quantity };
+
+  //   // نستخدم API لإنشاء سلة جديدة أو إضافة منتج
+  //   // في FakeStoreAPI، يمكنك استخدام:
+  //   // POST /carts/{userId} — لكن لا يوجد مستخدم ثابت، لذا سنستخدم POST /carts فقط
+  //   return this.http
+  //     .post<Cart>(this.API_URL, {
+  //       userId: 1, // ← يمكن تغييره لاحقًا
+  //       date: new Date().toISOString(),
+  //       products: [cartItem],
+  //     })
+  //     .pipe(
+  //       tap((newCart) => {
+  //         this._carts.update((carts) => [...carts, newCart]);
+  //       })
+  //     );
+  // }
+  // 🛒 السلة المحلية (في الذاكرة)
+  // 🛒 السلة المحلية (في الذاكرة)
+  // 🛒 السلة المحلية (في الذاكرة)
+
+  private productService = inject(ProductServices);
+
+  // 🛒 السلة المحلية (في الذاكرة)
+  private _cartItems = signal<CartItem[]>([]);
+  readonly cartItems = this._cartItems.asReadonly();
+
+  // 🧮 الإجمالي
+  readonly total = computed(() =>
+    this.cartItems().reduce((sum, item) => sum + item.product.price * item.quantity, 0)
+  );
+
+  // 📦 عدد العناصر الكلي
+  readonly totalItems = computed(() =>
+    this.cartItems().reduce((sum, item) => sum + item.quantity, 0)
+  );
+
+  // ➕ إضافة منتج إلى السلة
+  addToCart(productId: number, quantity: number = 1) {
+    const product = this.productService.products().find((p) => p.id === productId);
+    if (!product) return;
+
+    this._cartItems.update((items) => {
+      const existingItem = items.find((item) => item.productId === productId);
+      if (existingItem) {
+        // زيادة الكمية
+        return items.map((item) =>
+          item.productId === productId ? { ...item, quantity: item.quantity + quantity } : item
+        );
+      } else {
+        // إضافة جديد
+        return [...items, { productId, quantity, product }];
+      }
+    });
+  }
+
+  // ➖ تقليل الكمية
+  decreaseQuantity(productId: number) {
+    this._cartItems.update(
+      (items) =>
+        items
+          .map((item) =>
+            item.productId === productId && item.quantity > 1
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          )
+          .filter((item) => item.quantity > 0) // حذف إذا أصبحت 0
+    );
+  }
+
+  // 🗑️ حذف منتج
+  removeItem(productId: number) {
+    this._cartItems.update((items) => items.filter((item) => item.productId !== productId));
+  }
+
+  // 🧹 تفريغ السلة
+  clearCart() {
+    this._cartItems.set([]);
   }
 }

@@ -1,12 +1,30 @@
-<!-- src/app/features/carts/components/cart/cart.component.html -->
+<!-- src/app/features/carts/components/checkout/checkout.component.html -->
 <section class="container py-5 mt-5">
   <div class="d-flex align-items-center gap-2 mb-4">
-    <i class="bi bi-cart fs-2 text-primary"></i>
-    <h2 class="mb-0">سلتي</h2>
+    <i class="bi bi-credit-card fs-2 text-primary"></i>
+    <h2 class="mb-0">إتمام الطلب</h2>
   </div>
 
-  <!-- السلة فارغة -->
-  @if (cartItems().length === 0) {
+  <!-- ✅ رسالة النجاح (بعد الدفع) -->
+  @if (paymentSuccess) {
+  <div class="alert alert-success text-center p-4 rounded shadow-sm" role="alert">
+    <i class="bi bi-check-circle-fill fs-1 mb-3"></i>
+    <h4>تم الدفع بنجاح!</h4>
+    <p class="mb-3">شكرًا لطلبك. سيتم شحن طلبك قريبًا.</p>
+    <div class="d-flex justify-content-center gap-2">
+      <a routerLink="/products" class="btn btn-primary">
+        <i class="bi bi-shop me-1"></i>
+        العودة للتسوق
+      </a>
+      <button class="btn btn-outline-secondary" (click)="resetCheckout()">
+        طلب جديد
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- حالة السلة فارغة -->
+  @else if (cartItems().length === 0) {
   <div class="text-center py-5">
     <i class="bi bi-cart-x" style="font-size: 4rem; opacity: 0.5;"></i>
     <h4 class="mt-3">سلتك فارغة</h4>
@@ -16,14 +34,14 @@
   </div>
   }
 
-  <!-- محتوى السلة -->
+  <!-- نموذج الدفع (المحاكاة) -->
   @else {
   <div class="row g-4">
-    <!-- قائمة المنتجات -->
+    <!-- ملخص الطلب -->
     <div class="col-lg-8">
-      <div class="card shadow-sm border-0">
+      <div class="card shadow-sm border-0 h-100">
         <div class="card-header bg-light fw-bold">
-          🛒 منتجاتي ({{ totalItems() }})
+          🛒 ملخص الطلب
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -34,7 +52,6 @@
                   <th>السعر</th>
                   <th>الكمية</th>
                   <th>الإجمالي</th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -48,25 +65,8 @@
                     </div>
                   </td>
                   <td>${{ item.product.price | number:'1.2-2' }}</td>
-                  <td>
-                    <div class="d-flex align-items-center gap-2">
-                      <button class="btn btn-outline-secondary btn-sm" (click)="decreaseQuantity(item.productId)"
-                        [disabled]="item.quantity <= 1">
-                        -
-                      </button>
-                      <span class="fw-bold">{{ item.quantity }}</span>
-                      <button class="btn btn-outline-secondary btn-sm" (click)="increaseQuantity(item.productId)">
-                        +
-                      </button>
-                    </div>
-                  </td>
+                  <td>{{ item.quantity }}</td>
                   <td>${{ (item.product.price * item.quantity) | number:'1.2-2' }}</td>
-                  <td>
-                    <button class="btn btn-outline-danger btn-sm" (click)="removeFromCart(item.productId)"
-                      aria-label="حذف {{ item.product.title }}">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </td>
                 </tr>
                 }
               </tbody>
@@ -76,13 +76,14 @@
       </div>
     </div>
 
-    <!-- ملخص الدفع -->
+    <!-- نموذج الدفع -->
     <div class="col-lg-4">
       <div class="card shadow-sm border-0 h-100">
         <div class="card-header bg-light fw-bold">
           💳 ملخص الدفع
         </div>
         <div class="card-body">
+          <!-- ملخص السعر -->
           <div class="d-flex justify-content-between mb-3">
             <span>المجموع:</span>
             <strong>${{ total() | number:'1.2-2' }}</strong>
@@ -97,10 +98,21 @@
             <span class="text-success">${{ total() | number:'1.2-2' }}</span>
           </div>
 
-          <a routerLink="/checkout" class="btn btn-success w-100 py-3 fs-5">
+          <!-- زر الدفع -->
+          <button class="btn btn-success w-100 py-3 fs-5" (click)="processPayment()" [disabled]="paymentProcessing">
+            @if (paymentProcessing) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            جارٍ معالجة الدفع...
+            } @else {
             <i class="bi bi-credit-card me-2"></i>
-            المتابعة للدفع
-          </a>
+            دفع الآن
+            }
+          </button>
+
+          <p class="text-muted small mt-3 text-center">
+            <i class="bi bi-shield-check me-1"></i>
+            دفع آمن ومحمي (محاكاة)
+          </p>
         </div>
       </div>
     </div>

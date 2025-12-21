@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CartServices } from '../../services/cart-services/cart-services';
@@ -13,6 +13,8 @@ import { CartServices } from '../../services/cart-services/cart-services';
 })
 export class CartCreate {
   private cartService = inject(CartServices);
+
+  @Output() created = new EventEmitter<void>();
   form = new FormGroup({
     userId: new FormControl(1, { nonNullable: true, validators: [Validators.required] }),
     date: new FormControl(new Date().toISOString().substring(0, 10), {
@@ -56,6 +58,11 @@ export class CartCreate {
   submit() {
     if (this.form.invalid) return;
 
-    this.cartService.addCart(this.form.getRawValue());
+    this.cartService.addCart(this.form.getRawValue()).subscribe({
+      next: () => {
+        this.form.reset();
+        this.created.emit(); // 🔥 يخبر الأب بالإغلاق
+      },
+    });
   }
 }
