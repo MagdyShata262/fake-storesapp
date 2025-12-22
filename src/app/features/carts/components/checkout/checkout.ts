@@ -6,7 +6,7 @@ import { CartServices } from '../../services/cart-services/cart-services';
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink, DatePipe],
+  imports: [CommonModule, RouterModule, RouterLink],
   templateUrl: './checkout.html',
   styleUrl: './checkout.scss',
 })
