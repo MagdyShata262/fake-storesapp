@@ -1,17 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
+// src/app/features/users/models/user.model.ts
+// src/app/features/users/models/user.model.ts
 export interface User {
   id: number;
   email: string;
   username: string;
-  name: string;
-  phone: string;
-  website: string;
-  address: {
-    street: string;
-    catchPhrase: string;
-    bs: string;
+  password: string;
+  name: {
+    firstname: string;
+    lastname: string;
   };
+  phone: string;
+  address: {
+    geolocation: {
+      lat: string;
+      long: string; // ⚠️ لاحظ: "long" وليس "lng"
+    };
+    city: string;
+    street: string;
+    number: number;
+    zipcode: string;
+  };
+  __v: number; // ⚠️ حقل داخلي (من MongoDB) — يمكنك تجاهله
 }
 @Injectable({
   providedIn: 'root',
@@ -28,11 +39,17 @@ export class UsersServices {
   readonly totalUsers = computed(() => this.users().length);
 
   // Actions
+  // 🔄 تحميل المستخدمين
   loadUsers() {
     this.http.get<User[]>(this.API_URL).subscribe({
-      next: (res) => this._users.set(res),
-
-      error: () => console.error('فشل تحميل المستخدمين'),
+      next: (users) => {
+        this._users.set(users);
+        console.log(users);
+      },
+      error: (err) => {
+        console.error('فشل تحميل المستخدمين:', err);
+        // يمكنك عرض رسالة خطأ للمستخدم هنا لاحقًا
+      },
     });
   }
 }

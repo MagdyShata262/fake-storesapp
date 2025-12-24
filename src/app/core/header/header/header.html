@@ -1,93 +1,72 @@
-<!-- src/app/core/header/header.html -->
-<nav class="navbar fixed-top navbar-expand-lg" [class.bg-dark]="theme.isDark()" [class.bg-light]="!theme.isDark()"
-  aria-label="Main navigation">
-  <div class="container-fluid">
+<nav class="navbar fixed-top navbar-expand-lg bg-dark">
+  <div class="container-fluid d-flex align-items-center">
+
     <!-- Brand -->
-    <a class="navbar-brand" routerLink="/">
+    <a class="navbar-brand text-white me-4" routerLink="/">
       Fake Stores
     </a>
 
     <!-- Toggler -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-      aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Offcanvas -->
-    <div id="offcanvasNavbar" class="offcanvas" [class.offcanvas-end]="!theme.rtl()"
-      [class.offcanvas-start]="theme.rtl()" tabindex="-1" aria-labelledby="offcanvasNavbarLabel"
-      [class.text-bg-dark]="theme.isDark()" [class.text-bg-light]="!theme.isDark()">
-      <!-- Header -->
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-          {{ theme.rtl() ? 'القائمة' : 'Menu' }}
-        </h5>
-        <button type="button" class="btn-close" [class.btn-close-white]="theme.isDark()" data-bs-dismiss="offcanvas"
-          aria-label="Close"></button>
-      </div>
+    <!-- Navbar Content -->
+    <div id="mainNavbar" class="collapse navbar-collapse d-flex align-items-center">
 
-      <!-- Body -->
-      <div class="offcanvas-body">
-        <ul class="navbar-nav flex-grow-1" [class.pe-3]="!theme.rtl()" [class.ps-3]="theme.rtl()">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-              {{ theme.rtl() ? 'الرئيسية' : 'Home' }}
-            </a>
-          </li>
+      <!-- Links -->
+      <ul class="navbar-nav me-auto align-items-center gap-1">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active">
+            {{ theme.rtl() ? 'الرئيسية' : 'Home' }}
+          </a>
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/products" routerLinkActive="active">
-              {{ theme.rtl() ? 'المنتجات' : 'Products' }}
-            </a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/products" routerLinkActive="active">
+            {{ theme.rtl() ? 'المنتجات' : 'Products' }}
+          </a>
+        </li>
 
-          <!-- ✅ سلة التسوق في القائمة -->
-          <li class="nav-item">
-            <a class="nav-link position-relative" routerLink="/carts" routerLinkActive="active">
-              <i class="bi bi-cart"></i>
-              {{ theme.rtl() ? 'سلتي' : 'Cart' }}
-              @if (totalItems() > 0) {
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {{ totalItems() }}
-              </span>
-              }
-            </a>
-          </li>
-        </ul>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/users" routerLinkActive="active">
+            {{ theme.rtl() ? 'المستخدمون' : 'Users' }}
+          </a>
+        </li>
+      </ul>
 
-        <!-- Actions -->
-        <div class="d-flex flex-column gap-2 mt-3">
-          <!-- Theme toggle -->
-          <button class="btn btn-sm" [class.btn-light]="theme.isDark()" [class.btn-dark]="!theme.isDark()"
-            (click)="toggleTheme()" [attr.aria-pressed]="theme.isDark()">
-            {{ theme.isDark() ? '🌞 Light' : '🌙 Dark' }}
-          </button>
-        </div>
+      <!-- Actions -->
+      <div class="d-flex align-items-center gap-2">
+
+        <!-- Theme -->
+        <button class="btn btn-sm btn-outline-light" (click)="toggleTheme()">
+          {{ theme.isDark() ? '🌞 Light' : '🌙 Dark' }}
+        </button>
+
+        <!-- Auth -->
+        @if (!isLoggedIn()) {
+        <a routerLink="/login" class="btn btn-sm btn-outline-primary">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Login
+        </a>
+        } @else {
+        <a routerLink="/logout" class="btn btn-sm btn-outline-danger">
+          <i class="bi bi-box-arrow-right"></i>
+          Logout
+        </a>
+        }
+
+        <!-- Cart -->
+        <a routerLink="/cart" class="nav-link position-relative text-white px-2">
+          <i class="bi bi-cart fs-5"></i>
+          @if (totalItems() > 0) {
+          <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+            {{ totalItems() }}
+          </span>
+          }
+        </a>
+
       </div>
     </div>
-
-    <!-- ✅ سلة التسوق في الـ navbar الرئيسي (بجانب-toggler) -->
-    <a routerLink="/cart" class="nav-link position-relative d-lg-none d-flex align-items-center"
-      style="margin-inline-start: auto; color: var(--navbar-text) !important;">
-      <i class="bi bi-cart fs-4"></i>
-      @if (totalItems() > 0) {
-      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-        style="font-size: 0.65rem; padding: 0.2em 0.4em;">
-        {{ totalItems() }}
-      </span>
-      }
-    </a>
   </div>
-
-  <!-- ✅ سلة التسوق في الـ navbar (للجوال والديسكتوب) -->
-  <a routerLink="/cart" class="nav-link position-relative d-none d-lg-flex align-items-center"
-    style="color: var(--navbar-text) !important;">
-    <i class="bi bi-cart fs-5"></i>
-    @if (totalItems() > 0) {
-    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-      style="font-size: 0.7rem;">
-      {{ totalItems() }}
-    </span>
-    }
-  </a>
 </nav>

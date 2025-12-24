@@ -1,0 +1,16 @@
+// يرث الألوان من النظام العام
+.card {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.text-muted {
+  color: var(--app-text) !important;
+  opacity: 0.7;
+}

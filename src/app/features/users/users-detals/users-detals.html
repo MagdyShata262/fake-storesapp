@@ -1,1 +1,69 @@
 <p>users-detals works!</p>
+<!-- src/app/features/users/components/users-detals/users-detals.component.html -->
+<section class="container py-5 mt-5">
+  <!-- Loading -->
+  @if (loading()) {
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">جارٍ التحميل...</span>
+    </div>
+  </div>
+  }
+
+  <!-- Error -->
+  @else if (error()) {
+  <div class="alert alert-danger text-center" role="alert">
+    {{ error() }}
+  </div>
+  }
+
+  <!-- Content -->
+  @else if (user()) {
+  <div class="row g-4">
+    <!-- Card -->
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-light fw-bold">
+          👤 تفاصيل المستخدم
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column flex-md-row gap-4">
+            <!-- Icon Placeholder -->
+            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+              style="width: 120px; height: 120px; font-size: 3rem; color: #6c757d;">
+              {{ user()!.name.firstname.charAt(0) }}{{ user()!.name.lastname.charAt(0) }}
+            </div>
+
+            <div>
+              <h3 class="mb-3">
+                {{ user()!.name.firstname }} {{ user()!.name.lastname }}
+              </h3>
+              <p><strong>اسم المستخدم:</strong> {{ user()!.username }}</p>
+              <p><strong>البريد الإلكتروني:</strong> {{ user()!.email }}</p>
+              <p><strong>الهاتف:</strong> {{ user()!.phone }}</p>
+              <p><strong>المدينة:</strong> {{ user()!.address.city }}</p>
+              <p><strong>العنوان:</strong> {{ user()!.address.number }} {{ user()!.address.street }}</p>
+              <p><strong>الرمز البريدي:</strong> {{ user()!.address.zipcode }}</p>
+
+              <!-- خريطة (رابط خارجي) -->
+              @if (user()!.address.geolocation) {
+              <a href="https://www.google.com/maps?q={{user()!.address.geolocation.lat}},{{user()!.address.geolocation.long}}"
+                target="_blank" rel="noopener" class="btn btn-outline-primary mt-2">
+                عرض الموقع على الخريطة
+              </a>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- زر العودة -->
+  <div class="text-center mt-4">
+    <a routerLink="/users" class="btn btn-secondary">
+      ← العودة إلى المستخدمين
+    </a>
+  </div>
+  }
+</section>

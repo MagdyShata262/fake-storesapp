@@ -1,1 +1,40 @@
 <p>login works!</p>
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+  <div class="card shadow-sm w-100" style="max-width: 420px;">
+    <div class="card-body p-4">
+      <h4 class="card-title text-center mb-4">
+        🔐 {{ 'Login' }}
+      </h4>
+
+      <form (ngSubmit)="onSubmit()" novalidate>
+        <!-- Username -->
+        <div class="mb-3">
+          <label for="username" class="form-label">
+            Username
+          </label>
+          <input id="username" type="text" class="form-control" name="username" [(ngModel)]="username" required
+            autocomplete="username" placeholder="Enter your username" />
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label for="password" class="form-label">
+            Password
+          </label>
+          <input id="password" type="password" class="form-control" name="password" [(ngModel)]="password" required
+            autocomplete="current-password" placeholder="Enter your password" />
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
+          @if (!loading) {
+          <span>Login</span>
+          } @else {
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span class="ms-2">Loading...</span>
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

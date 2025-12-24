@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
+import { authGuardGuard } from './features/login/guards/auth-guard/auth-guard-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
   {
     path: 'products',
+    canActivate: [authGuardGuard],
     loadComponent: () =>
       import('./features/products/components/product-list/product-list').then((c) => c.ProductList),
   },
@@ -17,7 +19,8 @@ export const routes: Routes = [
   },
 
   {
-    path: 'carts',
+    path: 'cart',
+    canActivate: [authGuardGuard],
     loadComponent: () =>
       import('./features/carts/components/cart-list/cart-list').then((m) => m.CartList),
   },
@@ -44,8 +47,20 @@ export const routes: Routes = [
     path: 'users',
     loadComponent: () => import('./features/users/users-list/users-list').then((c) => c.UsersList),
   },
-  // {
-  //   path: 'users/:id',
-  //   loadComponent: () => import('./features/users/components/user-detail/user-detail.component').then(c => c.UserDetailComponent)
-  // }
+
+  // 🔓 Public Routes
+  {
+    path: 'login',
+    loadComponent: () => import('./features/login/login/login').then((c) => c.Login),
+  },
+  {
+    path: 'logout',
+    loadComponent: () => import('./features/login/logout/logout').then((c) => c.Logout),
+  },
+
+  {
+    path: 'users/:id',
+    loadComponent: () =>
+      import('./features/users/users-detals/users-detals').then((c) => c.UsersDetals),
+  },
 ];

@@ -1,0 +1,75 @@
+// src/app/features/users/components/users-detals/users-detals.component.scss
+
+// === Card Styling ===
+.card {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+
+  .card-header {
+    background-color: var(--card-bg, #f8f9fa);
+    border-bottom: 1px solid var(--card-border, #dee2e6);
+    padding: 1.25rem 1.5rem;
+    font-size: 1.25rem;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+// === Avatar Placeholder ===
+.bg-light {
+  background-color: #f0f0f0 !important;
+  color: #6c757d;
+}
+
+// === Button Styling ===
+.btn {
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// === Dark Mode Support ===
+:global(body[data-bs-theme='dark']) {
+  .card {
+    background-color: #1f2329;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    .card-header {
+      background-color: #2d2d2d;
+      border-color: #3a3a3a;
+      color: #e0e0e0;
+    }
+  }
+
+  .bg-light {
+    background-color: #2d2d2d !important;
+    color: #b0b0b0;
+  }
+
+  .text-muted {
+    color: #9aa0a6 !important;
+  }
+}
+
+// === Responsive Adjustments ===
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  .btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
