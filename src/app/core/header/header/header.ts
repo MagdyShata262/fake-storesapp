@@ -5,6 +5,7 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { CartServices } from '../../../features/carts/services/cart-services/cart-services';
 import { AuthServices } from '../../../features/login/auth-services/auth-services';
 import { UsersServices } from '../../../features/users/users-services/users-services';
+import { LoadingServices } from '../../loading-services/loading-services';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,9 @@ import { UsersServices } from '../../../features/users/users-services/users-serv
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
+  private loadingService = inject(LoadingServices);
+  readonly isLoading = this.loadingService.loading;
+
   theme = inject(ThemeService);
   private authService = inject(AuthServices);
   private userService = inject(UsersServices);

@@ -1,11 +1,22 @@
+<!-- في شريط التنقل -->
+
+
+
 <nav class="navbar fixed-top navbar-expand-lg bg-dark">
   <div class="container-fluid d-flex align-items-center">
 
     <!-- Brand -->
-    <a class="navbar-brand text-white me-4" routerLink="/">
+    <!-- <a class="navbar-brand text-white me-4" routerLink="/">
+      Fake Stores
+    </a> -->
+    <a class="navbar-brand text-white me-4 d-flex align-items-center" routerLink="/">
+      @if (isLoading()) {
+      <div class="spinner-border spinner-border-sm text-light me-2" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      }
       Fake Stores
     </a>
-
     <!-- Toggler -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
       <span class="navbar-toggler-icon"></span>
