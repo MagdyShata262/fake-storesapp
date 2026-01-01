@@ -42,7 +42,7 @@ export class ProductList implements OnInit {
   addToCart(productId: number) {
     this.cartService.addToCart(productId, 1);
     setTimeout(() => {
-      this.router.navigate(['/carts']);
+      this.router.navigate(['/cart']);
     }, 100);
   }
 

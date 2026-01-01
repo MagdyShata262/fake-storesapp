@@ -69,7 +69,7 @@ export class ProductDetali {
   addToCart(productId: number) {
     this.cartService.addToCart(productId, 1);
     setTimeout(() => {
-      this.router.navigate(['/carts']);
+      this.router.navigate(['/cart']);
     }, 100);
   }
   // addToCart(productId: number) {
