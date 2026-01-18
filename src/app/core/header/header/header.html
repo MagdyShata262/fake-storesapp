@@ -1,14 +1,9 @@
 <!-- في شريط التنقل -->
 
-
-
 <nav class="navbar fixed-top navbar-expand-lg bg-dark">
   <div class="container-fluid d-flex align-items-center">
 
     <!-- Brand -->
-    <!-- <a class="navbar-brand text-white me-4" routerLink="/">
-      Fake Stores
-    </a> -->
     <a class="navbar-brand text-white me-4 d-flex align-items-center" routerLink="/">
       @if (isLoading()) {
       <div class="spinner-border spinner-border-sm text-light me-2" role="status">
@@ -17,6 +12,7 @@
       }
       Fake Stores
     </a>
+
     <!-- Toggler -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
       <span class="navbar-toggler-icon"></span>
@@ -29,37 +25,33 @@
       <ul class="navbar-nav me-auto align-items-center gap-1">
         <li class="nav-item">
           <a class="nav-link" routerLink="/" routerLinkActive="active">
-            {{ theme.rtl() ? 'الرئيسية' : 'Home' }}
+            {{ 'nav.home' | translate }}
           </a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" routerLink="/products" routerLinkActive="active">
-            {{ theme.rtl() ? 'المنتجات' : 'Products' }}
+            {{ 'nav.products' | translate }}
           </a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" routerLink="/users" routerLinkActive="active">
-            {{ theme.rtl() ? 'المستخدمون' : 'Users' }}
+            {{ 'nav.users' | translate }}
           </a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" routerLink="/cart" routerLinkActive="active">
-            {{ theme.rtl() ? 'المستخدمون' : 'cart' }}
+            {{ 'nav.cart' | translate }}
           </a>
         </li>
-
-
-
-
-
-
       </ul>
 
       <!-- Actions -->
       <div class="d-flex align-items-center gap-2">
+
+        <!-- 🌍 Language Switch -->
+        <button class="btn btn-sm btn-outline-warning" (click)="toggleLanguage()">
+          {{ language.isArabic() ? 'EN' : 'AR' }}
+        </button>
 
         <!-- Theme -->
         <button class="btn btn-sm btn-outline-light" (click)="toggleTheme()">
@@ -70,16 +62,16 @@
         @if (!isLoggedIn()) {
         <a routerLink="/login" class="btn btn-sm btn-outline-primary">
           <i class="bi bi-box-arrow-in-right"></i>
-          Login
+          {{ 'auth.login' | translate }}
         </a>
         } @else {
         <a routerLink="/logout" class="btn btn-sm btn-outline-danger">
           <i class="bi bi-box-arrow-right"></i>
-          Logout
+          {{ 'auth.logout' | translate }}
         </a>
         }
 
-        <!-- Cart -->
+        <!-- Cart Icon with Badge -->
         <a routerLink="/cart" class="nav-link position-relative text-white px-2">
           <i class="bi bi-cart fs-5"></i>
           @if (totalItems() > 0) {

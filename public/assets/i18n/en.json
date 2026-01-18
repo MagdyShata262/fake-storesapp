@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "users": "Users",
+    "cart": "Cart"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout"
+  },
+
+  "products": {
+    "error": "An error occurred while loading products",
+    "empty": "No products available at the moment",
+    "listAria": "Products list",
+    "priceAria": "Price {{ price }} dollars",
+    "ratingAria": "Rating {{ rate }} out of 5",
+    "viewDetails": "View Details",
+    "addToCart": "Add to Cart",
+    "addToCartAria": "Add {{ title }} to cart"
+  },
+
+
+
+
+"productTitles": {
+    "1": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+    "2": "Mens Casual Premium Slim Fit T-Shirts",
+    "3": "Mens Cotton Jacket",
+    "4": "Mens Casual Slim Fit",
+    "5": "John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet",
+    "6": "Solid Gold Petite Micropave",
+    "7": "White Gold Plated Princess",
+    "8": "Pierced Owl Rose Gold Plated Stainless Steel Double",
+    "9": "White Gold Plated Princess Pendant Necklace",
+    "10": "Solid Gold Petite Micropave",
+    "11": "White Gold Plated Princess",
+    "12": "Pierced Owl Rose Gold Plated Stainless Steel Double",
+    "13": "K&F Concept Camera Backpack Bag",
+    "14": "Samsung 49-Inch CHG90 144Hz Gaming Monitor",
+    "15": "BIYLACLESEN Women's Winter Snow Boots",
+    "16": "Lock and Love Women's Removable Hooded Faux Leather Jacket",
+    "17": "Rain Jacket Women Windbreaker Striped Jacket",
+    "18": "MBJ Women's Solid Short Sleeve Boat Neck V",
+    "19": "Opna Women's Short Sleeve Moisture",
+    "20": "DANVOUY Womens T Shirt Casual Cotton Short"
+  }
+
+
+
+
+
+
+
+}

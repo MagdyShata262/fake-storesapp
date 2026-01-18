@@ -6,22 +6,27 @@ import { CartServices } from '../../../features/carts/services/cart-services/car
 import { AuthServices } from '../../../features/login/auth-services/auth-services';
 import { UsersServices } from '../../../features/users/users-services/users-services';
 import { LoadingServices } from '../../loading-services/loading-services';
+import { LanguaServices } from '../../langua-services/langua-services';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink],
+  imports: [CommonModule, RouterModule, RouterLink, TranslateModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  private loadingService = inject(LoadingServices);
-  readonly isLoading = this.loadingService.loading;
-
+  language = inject(LanguaServices);
   theme = inject(ThemeService);
+  private loadingService = inject(LoadingServices);
   private authService = inject(AuthServices);
   private userService = inject(UsersServices);
+  readonly isLoading = this.loadingService.loading;
+
+  currentLang = this.language.currentLang;
+  isArabic = this.language.isArabic;
   toggleTheme() {
     this.theme.toggleTheme();
   }
@@ -32,5 +37,10 @@ export class Header {
   constructor() {
     this.userService.loadUsers(); // ← تأكد من استدعاء هذا في البداية
   }
+
+  toggleLanguage() {
+    this.language.toggle();
+  }
+
   readonly totalItems = this.cartService.totalItems; // ← عدد العناصر في السلة
 }
